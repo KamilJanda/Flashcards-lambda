@@ -4,9 +4,15 @@
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE OverloadedStrings #-}
 
+-- note that this module contain code inspirated by below authors:
+--https://stackoverflow.com/questions/39090784/write-json-to-a-file-in-haskell-with-text-rather-than-char
+--https://github.com/mattjbray/servant-elm-example-app/blob/master/api/Api/Types.hs
+
 module Lib
     ( FlashCard(..)
     , Api
+    , FlashCardDB
+    , FlashCardID
     , getJSON
     , getFlashCard
     , writeFlashCard
@@ -18,17 +24,29 @@ import Data.Aeson   (FromJSON(..), ToJSON, withObject, eitherDecode )
 import Elm (ElmType)
 import GHC.Generics (Generic)
 import Servant ((:<|>), (:>), ReqBody, Post, Get, JSON)
---https://stackoverflow.com/questions/39090784/write-json-to-a-file-in-haskell-with-text-rather-than-char
+import qualified Data.Map.Strict as Map
+
 import Data.Aeson.Text (encodeToLazyText)
 import Data.Text.Lazy (Text)
 import Data.Text.Lazy.IO as I
 
 import qualified Data.ByteString.Lazy as B
 
+type FlashCardID = String
+
 data FlashCard = FlashCard
-                { polishWord :: String
+                { flashCardID :: Maybe FlashCardID
+                , polishWord :: String
                 , englishWord :: String
                 } deriving (Show, Generic, ElmType,FromJSON, ToJSON)
+
+type FlashCardDB = Map.Map FlashCardID FlashCard
+
+type Api = "flashcard" :> ( Get '[JSON] [FlashCard]
+                       :<|> ReqBody '[JSON] FlashCard :> Post '[JSON] FlashCard
+                       )
+
+-- some unusefull func
 
 getJSON :: String -> IO B.ByteString
 getJSON = B.readFile
@@ -44,5 +62,3 @@ writeFlashCard fc = I.writeFile "flashcard.json" (encodeToLazyText fc)
 
 writeFlashCards :: [Lib.FlashCard] -> IO ()
 writeFlashCards fcxs = I.writeFile "flashcards.json" (encodeToLazyText fcxs)
-
-type Api = "flashcard" :> Get '[JSON] FlashCard

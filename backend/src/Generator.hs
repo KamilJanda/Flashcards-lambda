@@ -2,6 +2,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TypeOperators     #-}
 
+--https://github.com/mattjbray/servant-elm-example-app/blob/master/code-generator/Main.hs
+
 module Generator where
 
 import           Data.Proxy  (Proxy (Proxy))

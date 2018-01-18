@@ -30,6 +30,10 @@ dependencies:
 - servant-elm
 - text
 - bytestring
+- containers
+- stm >= 2.4.4
+- random
+- uuid
 library:
   source-dirs: src
 
