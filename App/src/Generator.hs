@@ -29,4 +29,4 @@ specs =
   ]
 
 generate :: IO ()
-generate = specsToDir specs "generated"
+generate = specsToDir specs "frontend"

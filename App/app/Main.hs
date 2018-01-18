@@ -1,19 +1,46 @@
+{-# LANGUAGE DataKinds            #-}
+{-# LANGUAGE ExtendedDefaultRules #-}
+{-# LANGUAGE OverloadedStrings    #-}
+{-# LANGUAGE TypeOperators #-}
 module Main where
 
 import Lib
-import Servant
+import Servant ((:<|>) ((:<|>)), (:>), Get, Proxy (Proxy), Raw, Server, serve,
+                serveDirectory)
 import Network.Wai
 import Network.Wai.Handler.Warp (run)
 import Control.Monad.IO.Class (liftIO)
 import System.Random (randomIO)
-import Data.UUID (toString)
 import Control.Concurrent.STM (TVar, atomically, readTVar, writeTVar, newTVarIO,readTVarIO)
 import qualified Data.Map.Strict as Map
+import Lucid
+import Servant.HTML.Lucid (HTML)
 
 -- https://github.com/mattjbray/servant-elm-example-app/blob/master/api/Api/Server.hs
 
-server :: TVar Lib.FlashCardDB -> Server Lib.Api
-server flashCardDB = listFlashCards :<|> createFlashCard
+type SApi = "api" :> Lib.Api
+              :<|> Get '[HTML] (Html ())
+              :<|> "assets" :> Raw
+
+homePage :: Html ()
+homePage =
+  doctypehtml_ $ do
+    head_ $ do
+      title_ "FlashCards"
+      meta_ [ name_ "viewport"
+            , content_ "width=device-width, initial-scale=1" ]
+      script_ [src_ "assets/app.js"] ""
+    body_ (script_ "var elmApp = Elm.Main.fullscreen()")
+
+
+server :: TVar Lib.FlashCardDB -> Server SApi
+server flashCardDB = apiServer :<|> home :<|> assets
+    where home = return homePage
+          apiServer = serverBase flashCardDB
+          assets = serveDirectory "frontend/dist"
+
+serverBase :: TVar Lib.FlashCardDB -> Server Lib.Api
+serverBase flashCardDB = listFlashCards :<|> createFlashCard
   where listFlashCards =
           liftIO . atomically $ do
             flashCarddb <- readTVar flashCardDB
@@ -32,7 +59,7 @@ flashCards = let
                 Lib.FlashCard (Just "1") "Klucz" "Key"]
   in newTVarIO (Map.fromList (zip ["0", "1"] flashcards))
 
-userAPI :: Proxy Lib.Api
+userAPI :: Proxy SApi
 userAPI = Proxy
 
 app :: TVar Lib.FlashCardDB -> Application

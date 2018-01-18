@@ -34,6 +34,8 @@ dependencies:
 - stm >= 2.4.4
 - random
 - uuid
+- servant-lucid >= 0.5
+- lucid
 library:
   source-dirs: src
 
