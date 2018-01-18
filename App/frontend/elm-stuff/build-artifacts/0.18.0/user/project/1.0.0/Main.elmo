@@ -1,27 +1,258 @@
 var _user$project$Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
 };
+var _user$project$Main$initModel = {
+	flashCards: {ctor: '[]'},
+	newPolishWord: '',
+	newEnglishWord: '',
+	quesedEnglishWord: '',
+	currentFlashCard: 0,
+	response: ''
+};
+var _user$project$Main$getCurrentFlashCard = function (model) {
+	var arr = _elm_lang$core$Array$fromList(model.flashCards);
+	return A2(_elm_lang$core$Array$get, model.currentFlashCard, arr);
+};
+var _user$project$Main$checkIfSame = F2(
+	function (s1, s2) {
+		return _elm_lang$core$Native_Utils.eq(s1, s2) ? 'Correct!' : 'Wrong';
+	});
+var _user$project$Main$getPolishWord = function (fc) {
+	var _p0 = fc;
+	if (_p0.ctor === 'Nothing') {
+		return '';
+	} else {
+		return _p0._0.polishWord;
+	}
+};
+var _user$project$Main$getEnglishWord = function (fc) {
+	var _p1 = fc;
+	if (_p1.ctor === 'Nothing') {
+		return '';
+	} else {
+		return _p1._0.englishWord;
+	}
+};
+var _user$project$Main$Model = F6(
+	function (a, b, c, d, e, f) {
+		return {flashCards: a, newPolishWord: b, newEnglishWord: c, quesedEnglishWord: d, response: e, currentFlashCard: f};
+	});
+var _user$project$Main$Add = {ctor: 'Add'};
+var _user$project$Main$ChangePolishWord = function (a) {
+	return {ctor: 'ChangePolishWord', _0: a};
+};
+var _user$project$Main$ChangeEnglishWord = function (a) {
+	return {ctor: 'ChangeEnglishWord', _0: a};
+};
+var _user$project$Main$viewAddFC = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$h2,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Add new Flash Card !'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$input,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$placeholder('new english word'),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$ChangeEnglishWord),
+							_1: {ctor: '[]'}
+						}
+					},
+					{ctor: '[]'}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$input,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$placeholder('new polish word'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$ChangePolishWord),
+								_1: {ctor: '[]'}
+							}
+						},
+						{ctor: '[]'}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$button,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Events$onClick(_user$project$Main$Add),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('add'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		});
+};
+var _user$project$Main$Check = {ctor: 'Check'};
+var _user$project$Main$Change = function (a) {
+	return {ctor: 'Change', _0: a};
+};
+var _user$project$Main$Reset = {ctor: 'Reset'};
+var _user$project$Main$Previous = {ctor: 'Previous'};
+var _user$project$Main$Next = {ctor: 'Next'};
+var _user$project$Main$viewTester = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$h2,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'Guess this word meaning: ',
+							_user$project$Main$getPolishWord(
+								_user$project$Main$getCurrentFlashCard(model)))),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$input,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$placeholder('guesed english word'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$Change),
+									_1: {ctor: '[]'}
+								}
+							},
+							{ctor: '[]'}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$button,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Events$onClick(_user$project$Main$Check),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('check'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(model.response),
+								_1: {ctor: '[]'}
+							}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$button,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Events$onClick(_user$project$Main$Previous),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('previous'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$button,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Events$onClick(_user$project$Main$Next),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('next'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$button,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Events$onClick(_user$project$Main$Reset),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('reset'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}
+						}),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
 var _user$project$Main$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
 		{ctor: '[]'},
 		{
 			ctor: '::',
-			_0: _elm_lang$html$Html$text(
-				_elm_lang$core$Basics$toString(model)),
-			_1: {ctor: '[]'}
+			_0: A2(
+				_elm_lang$html$Html$h1,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Flash Card Alpha'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: _user$project$Main$viewTester(model),
+				_1: {
+					ctor: '::',
+					_0: _user$project$Main$viewAddFC(model),
+					_1: {ctor: '[]'}
+				}
+			}
 		});
 };
-var _user$project$Main$initModel = {
-	flashCards: {ctor: '[]'},
-	newPolishWord: '',
-	newEnglishWord: 'n',
-	currentFlashCard: 0
-};
-var _user$project$Main$Model = F4(
-	function (a, b, c, d) {
-		return {flashCards: a, newPolishWord: b, newEnglishWord: c, currentFlashCard: d};
-	});
 var _user$project$Main$SetFlashCards = function (a) {
 	return {ctor: 'SetFlashCards', _0: a};
 };
@@ -29,19 +260,100 @@ var _user$project$Main$fetch = A2(_elm_lang$http$Http$send, _user$project$Main$S
 var _user$project$Main$init = {ctor: '_Tuple2', _0: _user$project$Main$initModel, _1: _user$project$Main$fetch};
 var _user$project$Main$update = F2(
 	function (msg, model) {
-		var _p0 = msg;
-		if (_p0.ctor === 'Fetch') {
-			return {ctor: '_Tuple2', _0: model, _1: _user$project$Main$fetch};
-		} else {
-			return {
-				ctor: '_Tuple2',
-				_0: _elm_lang$core$Native_Utils.update(
-					model,
-					{
-						flashCards: A2(_elm_lang$core$Result$withDefault, model.flashCards, _p0._0)
-					}),
-				_1: _elm_lang$core$Platform_Cmd$none
-			};
+		var _p2 = msg;
+		switch (_p2.ctor) {
+			case 'Fetch':
+				return {ctor: '_Tuple2', _0: model, _1: _user$project$Main$fetch};
+			case 'SetFlashCards':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							flashCards: A2(_elm_lang$core$Result$withDefault, model.flashCards, _p2._0)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'Next':
+				return {
+					ctor: '_Tuple2',
+					_0: function () {
+						if (_elm_lang$core$Native_Utils.cmp(
+							model.currentFlashCard + 1,
+							_elm_lang$core$List$length(model.flashCards)) < 0) {
+							var temp = model.currentFlashCard;
+							return _elm_lang$core$Native_Utils.update(
+								model,
+								{currentFlashCard: temp + 1});
+						} else {
+							return model;
+						}
+					}(),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'Previous':
+				return {
+					ctor: '_Tuple2',
+					_0: function () {
+						if (_elm_lang$core$Native_Utils.cmp(model.currentFlashCard, 0) > 0) {
+							var temp = model.currentFlashCard;
+							return _elm_lang$core$Native_Utils.update(
+								model,
+								{currentFlashCard: temp - 1});
+						} else {
+							return model;
+						}
+					}(),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'Reset':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{currentFlashCard: 0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'Change':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{quesedEnglishWord: _p2._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'ChangeEnglishWord':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{newPolishWord: _p2._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'ChangePolishWord':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{newEnglishWord: _p2._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'Check':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							response: A2(
+								_user$project$Main$checkIfSame,
+								_user$project$Main$getEnglishWord(
+									_user$project$Main$getCurrentFlashCard(model)),
+								model.quesedEnglishWord)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			default:
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 		}
 	});
 var _user$project$Main$main = _elm_lang$html$Html$program(
