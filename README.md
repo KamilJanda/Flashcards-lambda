@@ -6,6 +6,8 @@ In `App`:
 build stack
 ```
 Also run `stack ghci` or `stack exec` to use generate for generating `App/frontend/Api.elm`
+
+
 In `App/frontend`:
 ```bash
   elm-make Main.elm --output dist/app.js
@@ -17,3 +19,4 @@ In `App/frontend`:
 4. https://www.elm-tutorial.org/en/02-elm-arch/01-introduction.html
 5. https://haskell-servant.readthedocs.io/en/stable/tutorial/Server.html#a-first-example
 6. https://guide.elm-lang.org/architecture/
+7. https://github.com/Tchayen/lambda-chat
