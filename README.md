@@ -7,11 +7,13 @@ build stack
 ```
 Also run `stack ghci` or `stack exec` to use generate for generating `App/frontend/Api.elm`
 
-
 In `App/frontend`:
 ```bash
   elm-make Main.elm --output dist/app.js
 ```
+## Running
+simply run main from App/app/main.hs and open `http://localhost:8000/` in your browser
+
 ## Credits and acknowledgement
 1. https://github.com/mattjbray/servant-elm
 2. https://github.com/mattjbray/servant-elm-example-app
