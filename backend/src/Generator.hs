@@ -6,13 +6,12 @@
 
 module Generator where
 
-import           Data.Proxy  (Proxy (Proxy))
-import           Elm         (Spec (Spec), specsToDir, toElmTypeSource,
+import Data.Proxy  (Proxy (Proxy))
+import Elm (Spec (Spec), specsToDir, toElmTypeSource,
                               toElmDecoderSource, toElmEncoderSource)
-import           Servant.Elm (ElmOptions (..), defElmImports, defElmOptions,
+import Servant.Elm (ElmOptions (..), defElmImports, defElmOptions,
                               generateElmForAPIWith, UrlPrefix (Static))
-
-import           Lib(FlashCard, Api)
+import Lib(FlashCard, Api)
 
 elmOpts :: ElmOptions
 elmOpts =
