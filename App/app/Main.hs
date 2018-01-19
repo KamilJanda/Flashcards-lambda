@@ -6,7 +6,7 @@ module Main where
 
 import Lib
 import Servant ((:<|>) ((:<|>)), (:>), Get, Proxy (Proxy), Raw, Server, serve,
-                serveDirectory)
+                serveDirectory, serveDirectoryFileServer)
 import Network.Wai
 import Network.Wai.Handler.Warp (run)
 import Control.Monad.IO.Class (liftIO)
@@ -37,7 +37,7 @@ server :: TVar Lib.FlashCardDB -> Server SApi
 server flashCardDB = apiServer :<|> home :<|> assets
     where home = return homePage
           apiServer = serverBase flashCardDB
-          assets = serveDirectory "frontend/dist"
+          assets = serveDirectoryFileServer "frontend/dist"
 
 serverBase :: TVar Lib.FlashCardDB -> Server Lib.Api
 serverBase flashCardDB = listFlashCards :<|> createFlashCard
