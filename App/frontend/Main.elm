@@ -20,6 +20,10 @@ type alias Model =
     , currentFlashCard : Int
     }
 
+isNotEmpty : Model -> Bool
+isNotEmpty model =
+  model.newPolishWord /= "" && model.newEnglishWord /= ""
+
 getEnglishWord : Maybe FlashCard -> String
 getEnglishWord fc =
   case fc of
@@ -109,8 +113,9 @@ viewAddFC model =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Fetch ->
-          ( model, fetch)
+      -- it might seem usless but too keep same return same value this option is created
+      -- if you are looking for example take a peek at Add
+        Fetch -> ( model, fetch)
 
         SetFlashCards nfc ->
           ({ model | flashCards = Result.withDefault model.flashCards nfc }, Cmd.none)
@@ -142,7 +147,19 @@ update msg model =
         Check ->  ({model |response = checkIfSame (getEnglishWord (getCurrentFlashCard model))
                       model.quesedEnglishWord}, Cmd.none)
 
-        Add -> (model, Cmd.none)
+        Add ->
+          if isNotEmpty model then
+            ({ model | newPolishWord = "", newEnglishWord="" },
+            postFlashcard
+            {
+              flashCardID = Nothing
+            , polishWord = model.newPolishWord
+            , englishWord = model.newEnglishWord
+            }
+            |> Http.send (\_ -> Fetch)
+            )
+          else
+            (model, Cmd.none)
 
 
 fetch : Cmd Msg
