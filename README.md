@@ -22,3 +22,5 @@ simply run main from App/app/main.hs and open `http://localhost:8000/` in your b
 5. https://haskell-servant.readthedocs.io/en/stable/tutorial/Server.html#a-first-example
 6. https://guide.elm-lang.org/architecture/
 7. https://github.com/Tchayen/lambda-chat
+8. https://wiki.haskell.org/HUnit_1.0_User%27s_Guide
+9. https://lab.iisg.agh.edu.pl/fp/lab4.html
