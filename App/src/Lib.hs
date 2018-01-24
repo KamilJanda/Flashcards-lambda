@@ -34,10 +34,11 @@ import qualified Data.ByteString.Lazy as B
 
 type FlashCardID = String
 
+
 data FlashCard = FlashCard
-                { flashCardID :: Maybe FlashCardID
-                , polishWord :: String
-                , englishWord :: String
+                { flashCardID :: Maybe FlashCardID -- ^ Unique flashcard ID
+                , polishWord :: String -- ^ Polish word
+                , englishWord :: String -- ^ English translation
                 } deriving (Show, Generic, ElmType,FromJSON, ToJSON)
 
 type FlashCardDB = Map.Map FlashCardID FlashCard
@@ -48,8 +49,11 @@ type Api = "flashcard" :> ( Get '[JSON] [FlashCard]
 
 -- some unusefull func
 
+-- | function 'getJSON' gets JSON from file
+-- It take file name as argument
 getJSON :: String -> IO B.ByteString
 getJSON = B.readFile
+
 
 getFlashCard :: IO (Either String FlashCard)
 getFlashCard = (eitherDecode <$> (getJSON "flashcard.json")) :: IO (Either String FlashCard)

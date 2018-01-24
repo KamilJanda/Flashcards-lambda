@@ -46,11 +46,11 @@ serverBase flashCardDB = listFlashCards :<|> createFlashCard
             flashCarddb <- readTVar flashCardDB
             return (Map.elems flashCarddb)
         createFlashCard flashCard = do
-          liftIO . atomically  $ do --perform STM atomic actions
+          liftIO . atomically  $ do -- ^ perform STM atomic actions
             flashCarddb <- readTVar flashCardDB
-            let idStr = show $ Map.size flashCarddb   -- get size (next index)
+            let idStr = show $ Map.size flashCarddb   -- ^ get size (next index)
                 flashCardWithId = flashCard { flashCardID = Just idStr }
-            writeTVar flashCardDB (Map.insert idStr flashCardWithId flashCarddb) -- insert new flashcard
+            writeTVar flashCardDB (Map.insert idStr flashCardWithId flashCarddb) -- ^ insert new flashcard
             return flashCardWithId
 
 flashCards :: IO (TVar Lib.FlashCardDB)
